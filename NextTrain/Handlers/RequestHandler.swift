@@ -7,16 +7,22 @@
 import Foundation
 import SwiftUI
 
+extension Date {
+   public func getFormattedDate(format: String) -> String {
+        let dateformat = DateFormatter()
+        dateformat.dateFormat = format
+        return dateformat.string(from: self)
+    }
+}
+
 func getUrl(d: String, a: String, hourOffset: Int) -> String {
     let departure = d.uppercased().replacingOccurrences(of: " ", with: "%20")
     let arrival = a.uppercased().replacingOccurrences(of: " ", with: "%20")
     
-    let date = Date()
+    let date = Date().getFormattedDate(format: "dd/MM/yyyy")
     let calendar = NSCalendar.current
-    let hour = calendar.component(.hour, from: date) + hourOffset
-    let urlString = "https://www.lefrecce.it/msite/api/solutions?origin="+departure+"&destination="+arrival+"&arflag=A&adate="+date.getFormattedDate(format: "dd/MM/yyyy")+"&atime="+String(hour)+"&adultno=1&childno=0&direction=A&frecce=false&onlyRegional=false"
-    
-    return urlString
+    let hour = calendar.component(.hour, from: Date()) + hourOffset
+    return "https://www.lefrecce.it/msite/api/solutions?origin="+departure+"&destination="+arrival+"&arflag=A&adate="+date+"&atime="+String(hour)+"&adultno=1&childno=0&direction=A&frecce=false&onlyRegional=false"
 }
 
 class ViewModel: ObservableObject {
@@ -42,12 +48,12 @@ class ViewModel: ObservableObject {
             DispatchQueue.main.async {
                 self?.solutions = solutions
                 //self?.solutionsData = self!.getUrl(d: d, a: a, hourOffset: 0)
-                print(data)
+                //print(data)
                 
             }
         }
         catch{
-            print(error)
+            //print(error)
         }
         }
         task.resume()

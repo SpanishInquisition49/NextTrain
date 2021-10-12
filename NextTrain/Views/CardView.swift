@@ -55,16 +55,10 @@ func matches(for regex: String, in text: String) -> [String] {
     }
 }
 
-extension Date {
-   func getFormattedDate(format: String) -> String {
-        let dateformat = DateFormatter()
-        dateformat.dateFormat = format
-        return dateformat.string(from: self)
-    }
-}
-
 struct CardView: View {
     let card: Solution
+    //var trainStatusView: TrainStatus? = nil
+    //@StateObject var trainStatusView = TrainStatus()
     var body: some View {
         ZStack(alignment:.leading) {
             RoundedRectangle(cornerRadius: 15.0, style: .continuous)
@@ -103,10 +97,15 @@ struct CardView: View {
                     .padding(5)
                     HStack {
                         Text("Cambi:" + String(card.changesno))
+                        Spacer()
+                        //Text("Ritardo:" + String(trainStatusView.trainStatus?.ritardo ?? -1))
                     }
                     .padding(5)
                 }
                 .padding(2)
+        }
+        .onAppear(){
+            //trainStatusView.fetch(s: getTrainId(trainName: card.trainlist[0].trainidentifier))
         }
     }
 }

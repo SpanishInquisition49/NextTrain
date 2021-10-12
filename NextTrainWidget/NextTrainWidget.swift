@@ -10,60 +10,98 @@ import SwiftUI
 import Intents
 
 struct Provider: IntentTimelineProvider {
-    func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), configuration: ConfigurationIntent())
-    }
-
-    func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        let entry = SimpleEntry(date: Date(), configuration: configuration)
+    func getSnapshot(for configuration: StationIntentIntent, in context: Context, completion: @escaping (TrainEntry) -> Void) {
+        let dStation = (configuration.departureStation?.uppercased().replacingOccurrences(of: " ", with: "%20")) ?? "PISA%20CENTRALE"
+        let aStation = (configuration.arrivalStation?.uppercased().replacingOccurrences(of: " ", with: "%20")) ?? "PIETRASANTA"
+        let urlString = getUrl(d: dStation, a: aStation, hourOffset: 0)
+        let url = URL(string: urlString)!
+        let data = try! Data.init(contentsOf: url)
+        let decoder: JSONDecoder = JSONDecoder.init()
+        let solution: [Solution] = try! decoder.decode([Solution].self, from: data)
+        //guard let solutionsEntry = try? JSONDecoder().decode([Solution].self, from: solutionsData) else {return}
+        let entry = TrainEntry(date: Date(), solution: solution[0])
         completion(entry)
     }
-
-    func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-        var entries: [SimpleEntry] = []
-
-        // Generate a timeline consisting of five entries an hour apart, starting from the current date.
-        let currentDate = Date()
-        for hourOffset in 0 ..< 5 {
-            let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-            let entry = SimpleEntry(date: entryDate, configuration: configuration)
-            entries.append(entry)
+    
+    func getTimeline(for configuration: StationIntentIntent, in context: Context, completion: @escaping (Timeline<TrainEntry>) -> Void) {
+        let dStation = (configuration.departureStation?.uppercased().replacingOccurrences(of: " ", with: "%20")) ?? "PISA%20CENTRALE"
+        let aStation = (configuration.arrivalStation?.uppercased().replacingOccurrences(of: " ", with: "%20")) ?? "PIETRASANTA"
+        let urlString = getUrl(d: dStation, a: aStation, hourOffset: 0)
+        let url = URL(string: urlString)!
+        let data = try! Data.init(contentsOf: url)
+        let decoder: JSONDecoder = JSONDecoder.init()
+        let solution: [Solution] = try! decoder.decode([Solution].self, from: data)
+        var found = false
+        var index = 0;
+        while(!found) {
+            if(Date() > Date(timeIntervalSince1970: TimeInterval(solution[index].departuretime/1000))) {
+                index += 1
+            }
+            else{
+                found = true;
+            }
         }
-
-        let timeline = Timeline(entries: entries, policy: .atEnd)
-        completion(timeline)
+        //guard let solutionsEntry = try? JSONDecoder().decode([Solution].self, from: solutionsData) else {return}
+        let dateD = Calendar.current.date(byAdding: .minute, value: 5, to: Date())!
+        let entry: TrainEntry = TrainEntry(date: dateD, solution: solution[index])
+        let timeLine = Timeline(entries: [entry], policy: .after(Date(timeIntervalSince1970: TimeInterval(solution[index].departuretime/1000))))
+        completion(timeLine)
+    }
+    
+    typealias Entry = TrainEntry
+    
+    typealias Intent = StationIntentIntent
+    //@AppStorage("solutionsData", store: UserDefaults(suiteName: "group.Scanna.NextTrain")) var solutionsData: String = ""
+    
+    func placeholder(in context: Context) -> TrainEntry {
+        return TrainEntry(date: Date(), solution: ViewModel.example[0])
     }
 }
 
-struct SimpleEntry: TimelineEntry {
-    let date: Date
-    let configuration: ConfigurationIntent
-}
+struct TrainEntry: TimelineEntry {
+    var date: Date
+    let solution: Solution
 
-struct NextTrainWidgetEntryView : View {
+struct fooEntryView : View {
     var entry: Provider.Entry
+    @Environment(\.widgetFamily) var family: WidgetFamily
 
+    @ViewBuilder
     var body: some View {
-        Text(entry.date, style: .time)
+        switch family {
+        case .systemSmall:
+            WidgetTrainViewSmall(card: entry.solution)
+        case .systemMedium:
+            WidgetTrainView(card: entry.solution)
+        case .systemLarge:
+            EmptyView()
+        case .systemExtraLarge:
+            EmptyView()
+        @unknown default:
+            EmptyView()
     }
 }
 
+    class SelectDepartureStation: INIntent {
+        var departureStation: String?
+        var arrivalStation: String?
+    }
+    
 @main
-struct NextTrainWidget: Widget {
-    let kind: String = "NextTrainWidget"
-
+struct foo: Widget {
+    let kind: String = "foo"
+    let prov = Provider()
     var body: some WidgetConfiguration {
-        IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider()) { entry in
-            NextTrainWidgetEntryView(entry: entry)
+        IntentConfiguration(
+            kind: kind, intent: StationIntentIntent.self,
+            provider: Provider()
+        ) { entry in
+            fooEntryView(entry: entry)
         }
+        .supportedFamilies([.systemMedium, .systemSmall])
         .configurationDisplayName("My Widget")
         .description("This is an example widget.")
     }
-}
-
-struct NextTrainWidget_Previews: PreviewProvider {
-    static var previews: some View {
-        NextTrainWidgetEntryView(entry: SimpleEntry(date: Date(), configuration: ConfigurationIntent()))
-            .previewContext(WidgetPreviewContext(family: .systemSmall))
     }
+}
 }
