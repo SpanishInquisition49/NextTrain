@@ -99,8 +99,8 @@ struct foo: Widget {
             fooEntryView(entry: entry)
         }
         .supportedFamilies([.systemMedium, .systemSmall])
-        .configurationDisplayName("My Widget")
-        .description("This is an example widget.")
+        .configurationDisplayName("Prossimo Treno")
+        .description("Mostra il prossimo treno tra la stazione di partenza e quella di arrivo")
     }
     }
 }

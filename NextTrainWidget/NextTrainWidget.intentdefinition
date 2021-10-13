@@ -73,7 +73,7 @@
 					<key>INIntentParameterConfigurable</key>
 					<true/>
 					<key>INIntentParameterDisplayName</key>
-					<string>Departure Station</string>
+					<string>Partenza</string>
 					<key>INIntentParameterDisplayNameID</key>
 					<string>6Iej7A</string>
 					<key>INIntentParameterDisplayPriority</key>
@@ -103,26 +103,6 @@
 							<key>INIntentParameterPromptDialogType</key>
 							<string>Primary</string>
 						</dict>
-						<dict>
-							<key>INIntentParameterPromptDialogCustom</key>
-							<true/>
-							<key>INIntentParameterPromptDialogFormatString</key>
-							<string>There are ${count} options matching ‘${departureStation}’.</string>
-							<key>INIntentParameterPromptDialogFormatStringID</key>
-							<string>DoXZvS</string>
-							<key>INIntentParameterPromptDialogType</key>
-							<string>DisambiguationIntroduction</string>
-						</dict>
-						<dict>
-							<key>INIntentParameterPromptDialogCustom</key>
-							<true/>
-							<key>INIntentParameterPromptDialogFormatString</key>
-							<string>Just to confirm, you wanted ‘${departureStation}’?</string>
-							<key>INIntentParameterPromptDialogFormatStringID</key>
-							<string>0Edzps</string>
-							<key>INIntentParameterPromptDialogType</key>
-							<string>Confirmation</string>
-						</dict>
 					</array>
 					<key>INIntentParameterTag</key>
 					<integer>6</integer>
@@ -133,7 +113,7 @@
 					<key>INIntentParameterConfigurable</key>
 					<true/>
 					<key>INIntentParameterDisplayName</key>
-					<string>Arrival Station</string>
+					<string>Arrivo</string>
 					<key>INIntentParameterDisplayNameID</key>
 					<string>TTmdbd</string>
 					<key>INIntentParameterDisplayPriority</key>
