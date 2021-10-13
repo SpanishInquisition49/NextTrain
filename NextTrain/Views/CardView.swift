@@ -13,9 +13,6 @@ func getDateFromTimeStamp(timeStamp : Double) -> String {
         
         let dayTimePeriodFormatter = DateFormatter()
         dayTimePeriodFormatter.dateFormat = "HH:mm"
-     // UnComment below to get only time
-    //  dayTimePeriodFormatter.dateFormat = "hh:mm a"
-
         let dateString = dayTimePeriodFormatter.string(from: date as Date)
         return dateString
 }
@@ -32,13 +29,6 @@ func getAllTrainForSolution(trains: [Trains]) -> String {
 func getTrainId(trainName: String) -> String {
     return matches(for: #"(\d+)(?!.*\d)"#, in: trainName)[0]
 }
-
-/*func timeIntervalStringFromString(s: String) -> String{
-    var dfmatter = DateFormatter()
-    dfmatter.dateFormat="HH:mm"
-    var date = dfmatter.date(from: s)
-    var dateStamp:TimeInterval = date!.timeIntervalSince1970
-}*/
 
 func matches(for regex: String, in text: String) -> [String] {
 
@@ -57,7 +47,6 @@ func matches(for regex: String, in text: String) -> [String] {
 
 struct CardView: View {
     let card: Solution
-    //var trainStatusView: TrainStatus? = nil
     //@StateObject var trainStatusView = TrainStatus()
     var body: some View {
         ZStack(alignment:.leading) {
@@ -113,6 +102,6 @@ struct CardView: View {
 struct CardView_Previews: PreviewProvider {
     static var previews: some View {
         CardView(card: ViewModel.example[0])
-            .previewLayout(.fixed(width: 450, height: 80))
+            .previewLayout(.fixed(width: 450, height: 150))
     }
 }

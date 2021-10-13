@@ -17,7 +17,6 @@ func perfomrMiniFetch(a: [Solution], f: MiniFethc) {
 
 struct ContentView: View {
     
-    //@AppStorage("emailAddress") var emailAddress: String = "sample@email.com"
     @State private var departureStation: String = ""
     @State private  var arrivalStation: String = ""
     @StateObject var viewModel = ViewModel()
@@ -46,9 +45,7 @@ struct ContentView: View {
                 .background(Color.blue)
                 .navigationTitle("Treni")
                 .onAppear() {
-                    //Usare la fetch con le variabili dopo il debug
                     viewModel.fetch(d: departureStation, a: arrivalStation)
-                    //viewModel.fetch()
                 }
             }
             .background(Color.blue)
