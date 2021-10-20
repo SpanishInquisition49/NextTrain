@@ -33,6 +33,7 @@ struct ContentView: View {
                         ForEach(viewModel.solutions, id:\.self) { solution in
                             if(Date() < Date(timeIntervalSince1970: TimeInterval(solution.departuretime/1000))) {
                                 NavigationLink(destination: SolutionDetailView(solution: solution)){
+                                    //CardView(card: solution, trainStatusView: TrainStatus())
                                     CardView(card: solution)
                                 }
                             }

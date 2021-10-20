@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3402D5FA2717140800CCD9DD /* DelayHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C5FAF0270F3C3F00108509 /* DelayHandler.swift */; };
+		34032047271F340400E50F59 /* railway.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 34032046271F340400E50F59 /* railway.jpg */; };
+		34032049271F419100E50F59 /* railway.svg in Resources */ = {isa = PBXBuildFile; fileRef = 34032048271F419100E50F59 /* railway.svg */; };
 		3420753C270B93910020A076 /* SolutionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3420753B270B93910020A076 /* SolutionDetailView.swift */; };
 		3420753E270B93AD0020A076 /* DetailHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3420753D270B93AD0020A076 /* DetailHandler.swift */; };
 		343AF0B22703677B006BB4C3 /* RequestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 343AF0B12703677B006BB4C3 /* RequestHandler.swift */; };
@@ -128,6 +131,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		34032046271F340400E50F59 /* railway.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = railway.jpg; path = AppIcon.appiconset/railway.jpg; sourceTree = SOURCE_ROOT; };
+		34032048271F419100E50F59 /* railway.svg */ = {isa = PBXFileReference; lastKnownFileType = file; name = railway.svg; path = AppIcon.appiconset/railway.svg; sourceTree = SOURCE_ROOT; };
 		34207539270B8E2E0020A076 /* NextTrain.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NextTrain.entitlements; sourceTree = "<group>"; };
 		3420753A270B8F610020A076 /* NextTrainWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NextTrainWidgetExtension.entitlements; sourceTree = "<group>"; };
 		3420753B270B93910020A076 /* SolutionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolutionDetailView.swift; sourceTree = "<group>"; };
@@ -215,6 +220,8 @@
 		346F447D2715AB9B0000EFC4 /* AppIcon.appiconset */ = {
 			isa = PBXGroup;
 			children = (
+				34032046271F340400E50F59 /* railway.jpg */,
+				34032048271F419100E50F59 /* railway.svg */,
 				346F447E2715AB9B0000EFC4 /* 88.png */,
 				346F447F2715AB9B0000EFC4 /* 1024.png */,
 				346F44802715AB9B0000EFC4 /* 76.png */,
@@ -493,6 +500,7 @@
 				34FD7EB426FA49C70065FAF7 /* Preview Assets.xcassets in Resources */,
 				346F44DC2715AB9B0000EFC4 /* 152.png in Resources */,
 				346F44D22715AB9B0000EFC4 /* 196.png in Resources */,
+				34032049271F419100E50F59 /* railway.svg in Resources */,
 				346F44BE2715AB9B0000EFC4 /* 16.png in Resources */,
 				34513774270C81F9004A3254 /* Station.json in Resources */,
 				346F44C62715AB9B0000EFC4 /* 32.png in Resources */,
@@ -506,6 +514,7 @@
 				346F44D82715AB9B0000EFC4 /* 50.png in Resources */,
 				346F44BA2715AB9B0000EFC4 /* 128.png in Resources */,
 				346F44CC2715AB9B0000EFC4 /* 57.png in Resources */,
+				34032047271F340400E50F59 /* railway.jpg in Resources */,
 				346F44D42715AB9B0000EFC4 /* 40.png in Resources */,
 				346F44AC2715AB9B0000EFC4 /* 58.png in Resources */,
 				346F44A82715AB9B0000EFC4 /* 216.png in Resources */,
@@ -521,6 +530,7 @@
 			files = (
 				34D7DCE1270B77030015F6C2 /* NextTrainWidget.intentdefinition in Sources */,
 				349D7C9A2716BBDB00A5AA46 /* WidgetTrainViewSmall.swift in Sources */,
+				3402D5FA2717140800CCD9DD /* DelayHandler.swift in Sources */,
 				34C5FAF4270F3C8300108509 /* DetailHandler.swift in Sources */,
 				34D7DCDC270B77010015F6C2 /* NextTrainWidget.swift in Sources */,
 				349D7C9C2716BBF500A5AA46 /* CardView.swift in Sources */,
@@ -683,7 +693,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -738,7 +748,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

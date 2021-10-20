@@ -16,28 +16,16 @@ import Foundation
 
 class TrainStatus: ObservableObject {
     @Published var trainStatus: TrainDetails? = nil
-    @Published var urlCode: [UrlCodes] = []
-    @Published var completedFirst: Bool = false
-    @Published var completedSecond: Bool = false
+    @Published var urlString: String = ""
     
     func fetch(s: String) {
         getFetchCodes(trainNumber: s)
-        //print("URL: " + getUrl(codesForUrl: getUrlCodes(s: urlCode)))
-        /*while(true) {
-            if(!urlCode.isEmpty) {
-                print(String(urlCode[0].numeroTreno) + " " + String(urlCode[0].codLocOrig) + " " + String(urlCode[0].descLocOrig))
-            }
-            else {
-                print("Empty")
-            }
-        }*/
-        guard let url = URL(string: getUrl()) else { return }
-        secondFetch(url: url)
+        print(urlString)
     }
   
     private func secondFetch(url: URL) {
         print("URL USATO: " + url.absoluteString)
-        let task = URLSession.shared.dataTask(with: url) { [weak self] data, _, error in guard let data = data, error == nil else{
+        let task = URLSession.shared.dataTask(with: url) { [weak self] data, _, error in guard let data = data else{
             return
         }
         //Convert To JSON
@@ -45,47 +33,48 @@ class TrainStatus: ObservableObject {
             let solutions = try JSONDecoder().decode(TrainDetails.self, from: data)
             DispatchQueue.main.async {
                 self?.trainStatus = solutions
-                //self?.completedSecond = true
             }
         }
         catch{
-            //print(error)
+            print(error)
         }
         }
         task.resume()
     }
     
     private func getFetchCodes(trainNumber: String) {
-        guard let url = URL(string: "https://www.viaggiatreno.it/viaggiatrenonew/resteasy/viaggiatreno/cercaNumeroTreno/" + trainNumber) else {
+        guard let url = URL(string: "http://www.viaggiatreno.it/viaggiatrenonew/resteasy/viaggiatreno/cercaNumeroTreno/" + trainNumber) else {
             return }
         let task = URLSession.shared.dataTask(with: url) { [weak self] data, _, error in guard let data = data, error == nil else{
-            print("ASS")
             return
         }
-        //Convert To JSON
-        do{
-            print("AaAAAAAA")
-            let solutions = try JSONDecoder().decode(UrlCodes.self, from: data)
-            print("Res:" + solutions.descLocOrig + " " + solutions.codLocOrig + " | " + solutions.numeroTreno)
-            DispatchQueue.main.async {
-                self?.urlCode.append(solutions)
-                //self?.completedSecond = true
+            //Convert To JSON
+            do{
+                let solutions = try JSONDecoder().decode(UrlCodes.self, from: data)
+                print(solutions)
+                guard let url = URL(string: (self?.getUrl(u: solutions)) as! String) else { return }
+                self?.secondFetch(url: url)
             }
-        }
-        catch{
-            print("ERRORE")
-            print(error)
-            print("FINE ERRORE")
-        }
+            catch{
+                print(error)
+            }
         }
         task.resume()
     }
     
    // private func getFetchCodes()
  
-    private func getUrl() -> String {
-        let urlString = "https://www.viaggiatreno.it/viaggiatrenonew/resteasy/viaggiatreno/andamentoTreno/" + String(urlCode[0].codLocOrig) + "/" + String(urlCode[0].numeroTreno) + "/" + String(urlCode[0].dataPartenza)
+    private func getUrl(u: UrlCodes) -> String {
+        let urlString = "http://www.viaggiatreno.it/viaggiatrenonew/resteasy/viaggiatreno/andamentoTreno/" + String(u.codLocOrig) + "/" + String(u.numeroTreno) + "/" + String(u.dataPartenza)
         return urlString
+    }
+    
+    //8619 - MILANO CENTRALE|8619-S01700-1633557600000 input
+    private func string2UrlCode(s: String) -> UrlCodes {
+        let str = s.replacingOccurrences(of: "\n", with: "").split(separator: "|")
+        let data = str[1].split(separator: "-")
+        let urlCode = UrlCodes(numeroTreno: String(data[0]), codLocOrig: String(data[1]), descLocOrig: "", dataPartenza: Int(data[2])!, corsa: "", h24: false)
+        return urlCode
     }
 }
 
@@ -94,14 +83,14 @@ class TrainStatus: ObservableObject {
 struct TrainDetails: Hashable, Codable {
     let tipoTreno: String
     let orentamento: String?
-    let codiceCliente: String
+    let codiceCliente: Int?
     let fermateSoppresso: String?
     let dataPartenza: String?
     let fermate: [Fermata]
     let anormalita: String?
     let provvedimenti: String?
     let segnalazioni: String?
-    let oraUltimoRilevamento: Int
+    let oraUltimoRilevamento: Int?
     let stazioneUltimoRilevamento: String
     let idDestinazione: String
     let idOrigine: String
@@ -185,14 +174,14 @@ struct Fermata: Hashable, Codable {
     let listaCorrispondenze: String?
     let programmata: Int
     let programmataZero: String?
-    let effettiva: Int
+    let effettiva: Int?
     let ritardo: Double
     let partenzaTeoricaZero: String?
     let arrivoTeoricoZero: String?
-    let partenza_teorica: Int
+    let partenza_teorica: Int?
     let arrivo_teorico: Int?
     let isNextChanged: Bool
-    let partenzaReale: Int
+    let partenzaReale: Int?
     let arrivoReale: Int?
     let ritardoPartenza: Double
     let ritardoArrivo: Double
@@ -202,11 +191,11 @@ struct Fermata: Hashable, Codable {
     let binarioEffettivoArrivoDescrizione: String?
     let binarioProgrammatoArrivoCodice: String?
     let binarioProgrammatoArrivoDescrizione: String?
-    let binarioEffettivoPartenzaCodice: String
-    let binarioEffettivoPartenzaTipo: String
-    let binarioEffettivoPartenzaDescrizione: String
-    let binarioProgrammatoPartenzaCodice: String
-    let binarioProgrammatoPartenzaDescrizione: String
+    let binarioEffettivoPartenzaCodice: String?
+    let binarioEffettivoPartenzaTipo: String?
+    let binarioEffettivoPartenzaDescrizione: String? //Binario da usare per le partenze credo
+    let binarioProgrammatoPartenzaCodice: String?
+    let binarioProgrammatoPartenzaDescrizione: String?
     let tipoFermata: String
     let visualizzaPrevista: Bool
     let nextChanged: Bool
